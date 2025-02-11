@@ -8,9 +8,10 @@ import os
 import threading
 
 app = Flask(__name__)
+
 qr_image_path = "static/qr_code.png"
 status_file = "static/status.txt"
-checkmark_path = "static/checkmark.png.webp"  # Ensure checkmark image is in static/
+checkmark_path = "static/checkmark.png"
 
 # Ensure 'static' folder exists
 if not os.path.exists("static"):
@@ -23,8 +24,8 @@ if not os.path.exists(status_file):
 
 def init_whatsapp():
     options = webdriver.ChromeOptions()
-    options.add_argument("--headless")
     options.add_argument("--disable-gpu")
+    options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
 
@@ -49,22 +50,33 @@ def init_whatsapp():
         except Exception as e:
             print(f"❌ Error extracting QR code: {e}")
 
-            # Check if user is logged in by finding the "Chats" heading
+            # ✅ Check for "X" (logged-in indicator)
             try:
-                chats_heading = driver.find_element("xpath", "//h1[contains(@class, 'x1qlqyl8') and contains(text(), 'Chats')]")
-                if chats_heading:
-                    print("✅ WhatsApp Login successful!")
+                close_button = driver.find_element("css selector", 'span[data-icon="x"]')
+                if close_button:
+                    print("✅ WhatsApp Login Successful! Detected 'X' icon.")
+
+                    # Update status
                     with open(status_file, "w") as f:
                         f.write("logged_in")
-            except:
-                pass  # Continue loop if not found
-            break
+
+                    # Replace QR code with checkmark
+                    if os.path.exists(checkmark_path):
+                        os.replace(checkmark_path, qr_image_path)
+
+                    print("✅ Updated UI: Checkmark displayed & text changed.")
+                    break  # Exit loop after detecting login
+            except Exception as e:
+                print(f"❌ 'X' not found yet. Checking again... {e}")
+            time.sleep(3)  # Retry after a short delay
 
     return driver
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    with open(status_file, "r") as f:
+        status = f.read()
+    return render_template('index.html', status=status)
 
 @app.route('/qr_code')
 def get_qr_code():
@@ -84,10 +96,23 @@ def get_checkmark():
 
 def run_flask():
     print("Starting Flask server on http://127.0.0.1:5000/ ...")
-    webbrowser.open("http://127.0.0.1:5000/")
-    app.run(port=5000, debug=False, use_reloader=False)
+    app.run(host='127.0.0.1', port=5000, debug=False, use_reloader=False)
 
 if __name__ == "__main__":
+    # Start Flask in a separate thread
     flask_thread = threading.Thread(target=run_flask, daemon=True)
     flask_thread.start()
-    driver = init_whatsapp()
+
+    # Wait for Flask to start
+    time.sleep(3)  # Give Flask some time to initialize
+
+    # Open the browser after Flask is running
+    webbrowser.open("http://127.0.0.1:5000/")
+
+    # Run WhatsApp automation in another thread to avoid blocking Flask
+    whatsapp_thread = threading.Thread(target=init_whatsapp, daemon=True)
+    whatsapp_thread.start()
+
+    # Keep the main thread alive
+    while True:
+        time.sleep(1)
