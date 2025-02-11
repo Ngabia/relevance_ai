@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp QR Code</title>
+    <script>
+        function refreshQR() {
+            // Append a timestamp to the URL to force the browser to refresh the image
+            document.getElementById("qr-code").src = "/qr_code?" + new Date().getTime();
+        }
+        // Refresh the QR code every 5 seconds
+        setInterval(refreshQR, 5000);
+    </script>
+</head>
+<body>
+    <h2>Scan the QR Code to Log in to WhatsApp</h2>
+    <img id="qr-code" src="/qr_code" alt="WhatsApp QR Code">
+</body>
+</html>
