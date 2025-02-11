@@ -1,34 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-US" dir="ltr">
-
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-    <!-- ===============================================-->
-    <!--    Document Title-->
-    <!-- ===============================================-->
     <title>Fanisi Online | AI Agents Deployment</title>
 
-
-    <!-- ===============================================-->
-    <!--    Favicons-->
-    <!-- ===============================================
-    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicons/favicon-16x16.png">
-    <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicons/favicon.ico">
-    <link rel="manifest" href="assets/img/favicons/manifest.json">
-    <meta name="msapplication-TileImage" content="assets/img/favicons/mstile-150x150.png">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta name="theme-color" content="#ffffff">
-
-
-    <!-- ===============================================-->
-    <!--    Stylesheets-->
-    <!-- ===============================================-->
     <link href="{{ url_for('static', filename='assets/css/theme.css') }}" rel="stylesheet" />
     <script>
       function refreshQR() {
@@ -45,168 +24,54 @@
                   let statusElement = document.getElementById("status-text");
                   let qrCode = document.getElementById("qr-code");
                   let reloadButton = document.getElementById("reload-button");
-                  let checkmarkImage = document.getElementById("checkmark-img");
+                  //let checkmarkImage = document.getElementById("checkmark-img");
 
                   if (status.trim() === "logged_in") {
-                      statusElement.innerHTML = '<i class="fa-solid fa-qrcode"></i> WhatsApp Login successful';
-
-                      // Hide QR code and reload button
+                      statusElement.innerHTML = '<i class="fa-solid fa-check-circle"></i> WhatsApp Login Successful';
                       qrCode.style.display = "none";
                       reloadButton.style.display = "none";
-
-                      // Show checkmark image
                       checkmarkImage.style.display = "block";
                   } else {
                       statusElement.innerHTML = '<i class="fa-solid fa-qrcode"></i> Scan the QR Code to Log in to WhatsApp';
-
-                      // Show QR code and reload button
                       qrCode.style.display = "block";
                       reloadButton.style.display = "inline-block";
-
-                      // Hide checkmark image
                       checkmarkImage.style.display = "none";
                   }
               })
               .catch(error => console.error("Error checking status:", error));
       }
 
-      setInterval(refreshQR, 5000); // Refresh QR code every 5 seconds
-      setInterval(checkLoginStatus, 3000); // Check login status every 3 seconds
-  </script>
+      setInterval(refreshQR, 5000);
+      setInterval(checkLoginStatus, 3000);
+    </script>
   </head>
   <body>
-
-    <!-- ===============================================-->
-    <!--    Main Content-->
-    <!-- ===============================================-->
     <main class="main" id="top">
-      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" data-navbar-on-scroll="data-navbar-on-scroll">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
         <div class="container">
-            <a class="navbar-brand d-inline-flex" href="index.html">
+            <a class="navbar-brand" href="index.html">
                 <span class="text-1000 fs-3 fw-bold ms-2 text-gradient">Fanisi Online</span>
             </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"> </span></button>
-          <div class="collapse navbar-collapse border-top border-lg-0 my-2 mt-lg-0" id="navbarSupportedContent">
-            <div class="mx-auto pt-5 pt-lg-0 d-block d-lg-none d-xl-block">
-              <p class="mb-0 fw-bold text-lg-center">Delivering <span>AI driven solutions to businesses</span></p>
-            </div>
-              </div>
-              <button class="btn btn-white shadow-warning text-warning" type="submit"> <i class="fas fa-user me-2"></i>Login</button>
-            </form>
-          </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"><span class="navbar-toggler-icon"> </span></button>
+          <button class="btn btn-white shadow-warning text-warning" type="submit"> <i class="fas fa-user me-2"></i>Login</button>
         </div>
       </nav>
       <section class="py-5 overflow-hidden bg-primary" id="home">
         <div class="container">
           <div class="row flex-center">
-            <div class="col-md-5 col-lg-6 order-0 order-md-1 mt-8 mt-md-0"><a class="img-landing-banner" href="#!"><img class="img-fluid" src="{{ url_for('static', filename='assets/img/gallery/hero-header.png') }}" alt="hero-header">
-            </a></div>
+            <div class="col-md-5 col-lg-6 order-0 order-md-1 mt-8 mt-md-0">
+              <img class="img-fluid" src="{{ url_for('static', filename='assets/img/gallery/hero-header.png') }}" alt="hero-header">
+            </div>
             <div class="col-md-7 col-lg-6 py-5 text-md-start text-center">
               <h4 class="display-1 fs-md-5 fs-lg-6 fs-xl-8 text-light">Restaurant AI Agent</h4>
-              <div class="card-body text-center d-flex flex-column align-items-center justify-content-center bg-white p-4 rounded shadow">
-                <nav>
-                  <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <span class="nav-link active mb-3 d-inline-block">
-                      <h2 id="status-text"><i class="fa-solid fa-qrcode"></i> Scan the QR Code to Log in to WhatsApp</h2>
-                    </span>
-                  </div>
-                </nav>
-                <div class="tab-content mt-3" id="nav-tabContent">
-                  <div class="tab-pane fade show active" id="nav-home" role="tabpanel">
-                    <!-- Check Mark Image (Initially Hidden) -->
-                    <img id="checkmark-img" src="/checkmark" alt="Login Successful" style="display: none; width: 150px;">
-                   <img id="qr-code" src="/qr_code" alt="WhatsApp QR Code" class="img-fluid" style="max-width: 200px;" >
-                  </div>
-                </div>
+              <div class="card-body text-center bg-white p-4 rounded shadow">
+                <h2 id="status-text"><i class="fa-solid fa-qrcode"></i> Scan the QR Code to Log in to WhatsApp</h2>
+                <img id="qr-code" src="/qr_code" alt="WhatsApp QR Code" class="img-fluid" style="max-width: 200px;" >
                 <button class="btn btn-danger mt-3" id="reload-button" onClick="refreshQR()">Reload QR</button>
               </div>              
             </div>
           </div>
         </div>
       </section>
-
-
-      <!-- ============================================-->
-      <!-- <section> begin ============================-->
-      
-      <!-- <section> close ============================-->
-      <!-- ============================================-->
-
-
-
-
-      <!-- ============================================-->
-      <!-- <section> begin ============================-->
-      
-      <!-- <section> close ============================-->
-      <!-- ============================================-->
-
-
-
-
-      <!-- ============================================-->
-      <!-- <section> begin ============================-->
-      
-      <!-- <section> close ============================-->
-      <!-- ============================================-->
-
-
-      <!-- ============================================-->
-      <!-- <section> begin ============================-->
-     
-      <!-- <section> close ============================-->
-      <!-- ============================================-->
-
-
-      <!-- ============================================-->
-      <!-- <section> begin ============================-->
-     
-      <!-- <section> close ============================-->
-      <!-- ============================================-->
-
-
-      <!-- ============================================-->
-      <!-- <section> begin ============================-->
-      
-      <!-- <section> close ============================-->
-      <!-- ============================================-->
-
-
-      <!-- ============================================-->
-      <!-- <section> begin ============================-->
-     
-      <!-- <section> close ============================-->
-      <!-- ============================================-->
-
-
-      <!-- ============================================-->
-      <!-- <section> begin ============================-->
-      
-      <!-- <section> close ============================-->
-      <!-- ============================================-->
-
-
-    </main>
-    <!-- ===============================================-->
-    <!--    End of Main Content-->
-    <!-- ===============================================-->
-
-
-
-
-    <!-- ===============================================-->
-    <!--    JavaScripts-->
-    <!-- ===============================================-->
-    <script src="{{ url_for('static', filename='vendors/@popperjs/popper.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/bootstrap/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='vendors/is/is.min.js') }}"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
-    <script src="{{ url_for('static', filename='vendors/fontawesome/all.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/js/theme.js') }}"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
-    <script src="{{ url_for('static', filename='vendors/fontawesome/all.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='assets/js/theme.js') }}"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200;300;400;600;700;900&amp;display=swap" rel="stylesheet">
   </body>
-
 </html>
