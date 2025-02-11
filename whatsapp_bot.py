@@ -46,7 +46,7 @@ def init_whatsapp():
             with open(status_file, "w") as f:
                 f.write("waiting")
 
-            time.sleep(5)  # Check every 5 seconds
+            time.sleep(2)  # Check every 2 seconds
         except Exception as e:
             print(f"❌ Error extracting QR code: {e}")
 
@@ -68,7 +68,7 @@ def init_whatsapp():
                     break  # Exit loop after detecting login
             except Exception as e:
                 print(f"❌ 'X' not found yet. Checking again... {e}")
-            time.sleep(3)  # Retry after a short delay
+            time.sleep(1)  # Retry after a short delay
 
     return driver
 
